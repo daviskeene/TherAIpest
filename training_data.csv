@@ -1,0 +1,26 @@
+Message,Rating
+I love this sandwich,pos
+This is an amazing place!,pos
+I feel very good about these beers,pos
+This is my best work.,pos
+What an awesome view,pos
+I do not like this restaurant,neg
+I am tired of this stuff.,neg
+I can't deal with this.,neg
+He is my sworn enemy!,neg
+My boss is horrible.,neg
+I feel depressed.,neg
+I hate myself.,neg
+I don't want to live anymore,neg
+I want to die,neg
+I feel happy,pos
+I love myself,pos
+I had a good day today,pos
+I got a good grade on a test,pos
+I got a bad grade on a test,neg
+Life is awful,neg
+I feel unhappy,neg
+I want to kill myself,neg
+I have many problems,neg
+Today was a good day,pos
+Life isn't worth living anymore,neg

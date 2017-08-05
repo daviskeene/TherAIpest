@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_ask import Ask, question, statement
+import theraipy
 import nltk
 from nltk.tokenize import word_tokenize
 
@@ -8,34 +9,30 @@ ask = Ask(app, "/")
 
 @ask.launch
 def startSkill():
-    msg = "Hello, welcome to the Ther-AI-pest. Would you like to have a chat?"
+    msg = "Hello, welcome to the Ther-AI-pest. Are you feeling sad?"
     return question(msg)
 
 @ask.intent("YesIntent")
 def theraipy():
+    msg = "What seems to be the problem?"
+    return question(msg)
 
-    train = [("Great place to be when you are in Bangalore.", "pos"),
-             ("The place was being renovated when I visited so the seating was limited.", "neg"),
-             ("Loved the ambience, loved the food", "pos"),
-             ("The food is delicious but not over the top.", "neg"),
-             ("Service - Little slow, probably because too many people.", "neg"),
-             ("The place is not easy to locate", "neg"),
-             ("Mushroom fried rice was spicy", "pos"),
-             ("I hated the food. It was terrible", "neg"),
-             ("The food did not satisfy me.", "neg")
-             ]
+@ask.intent("NoIntent")
+def happy():
+    msg = "I'm glad that you are feeling happy. What was the best part of your day?"
+    return question(msg)
 
-    dictionary = set(word.lower() for passage in train for word in word_tokenize(passage[0]))
+@ask.intent("TherapyIntent")
+def theraipy(line):
+    sentiment = theraipy.process(line)
 
-    t = [({word: (word in word_tokenize(x[0])) for word in dictionary}, x[1]) for x in train]
-
-    classifier = nltk.NaiveBayesClassifier.train(t)
-
-    test_data = "The food was poisoned by the chinese. I absolutely hated it."
-    test_data_features = {word.lower(): (word in word_tokenize(test_data.lower())) for word in dictionary}
-
-    print (classifier.classify(test_data_features))
-
+    if sentiment == "pos":
+        msg = "I am glad that you are feeling well. Would you like to continue to speak?"
+        return question(msg)
+    if sentiment == "neg":
+        if "kill myself" in line:
+            msg = "I am sorry that you are feeling suicidal."
+            return statement(msg)
 if __name__ == '__main__':
     app.run(debug=True)
 
