@@ -16,14 +16,7 @@
       "intent": "NoIntent"
     },
     {
-      "intent": "ElaborateIntent",
-      "slots": [
-        {
-          "input": "extension",
-          "type": "AMAZON.LITERAL"
-
-        },
+      "intent": "AdviceIntent"
+    },
       ]
     }
-  ]
-}
