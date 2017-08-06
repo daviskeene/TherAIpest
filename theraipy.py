@@ -2,6 +2,7 @@ import nltk
 from nltk.tokenize import word_tokenize
 import pandas as pd
 import numpy as np
+import random
 
 #Import the data from a csv file
 
@@ -23,15 +24,13 @@ def process(line):
 
     classifier = nltk.NaiveBayesClassifier.train(x)
 
-    #Development purposes only, print most important words.
-
-    classifier.show_most_informative_features()
-
     test_data = line
     if line.__len__() > 1:
 
+#If there is a string, return if string is labeled as positive or negative
         test_data_features = {word.lower(): (word in word_tokenize(test_data.lower())) for word in wordlist}
 
+        print line
         print(classifier.classify(test_data_features))
         return(classifier.classify(test_data_features))
     else:
@@ -41,4 +40,6 @@ def elaborate(extension):
 
     return 0
 
-process("")
+#Testing purposes, select random choice from list and predict
+
+process(random.choice(csvdata1[:,0]))

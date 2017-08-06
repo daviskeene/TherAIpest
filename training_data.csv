@@ -23,6 +23,8 @@ I feel unhappy,neg
 I want to kill myself,neg
 I have many problems,neg
 Today was a good day,pos
+Today was a bad day,neg
+I had a bad day today,neg
 Life isn't worth living anymore,neg
 I had a great day,pos
 I'm amazing,pos
@@ -49,3 +51,4 @@ I'm so stupid,neg
 :),pos
 :(,neg
 <3,pos
+It has been a bad day,neg
