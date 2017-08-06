@@ -28,10 +28,17 @@ def process(line):
     classifier.show_most_informative_features()
 
     test_data = line
-    test_data_features = {word.lower(): (word in word_tokenize(test_data.lower())) for word in wordlist}
+    if line.__len__() > 1:
 
-    print(classifier.classify(test_data_features))
-    return(classifier.classify(test_data_features))
+        test_data_features = {word.lower(): (word in word_tokenize(test_data.lower())) for word in wordlist}
 
+        print(classifier.classify(test_data_features))
+        return(classifier.classify(test_data_features))
+    else:
+        print "lol"
 
-process("I went for a walk today, and the weather was very nice.")
+def elaborate(extension):
+
+    return 0
+
+process("")

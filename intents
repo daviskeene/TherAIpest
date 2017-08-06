@@ -1,0 +1,29 @@
+{
+  "intents": [
+    {
+      "intent": "TherapyIntent",
+      "slots": [
+        {
+          "input": "line",
+          "type": "phrase"
+        },
+      ]
+    }
+    {
+      "intent": "YesIntent"
+    },
+    {
+      "intent": "NoIntent"
+    },
+    {
+      "intent": "ElaborateIntent",
+      "slots": [
+        {
+          "input": "extension",
+          "type": "AMAZON.LITERAL"
+
+        },
+      ]
+    }
+  ]
+}

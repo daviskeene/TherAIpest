@@ -9,7 +9,7 @@ ask = Ask(app, "/")
 
 @ask.launch
 def startSkill():
-    msg = "Hello, welcome to the Ther-AI-pest. Are you feeling sad?"
+    msg = "Hello, welcome to the Ther-AI-pest. Can I help you?"
     return question(msg)
 
 @ask.intent("YesIntent")
@@ -22,17 +22,33 @@ def happy():
     msg = "I'm glad that you are feeling happy. What was the best part of your day?"
     return question(msg)
 
+@ask.intent("ElaborateIntent")
+def elab(extension):
+    try:
+        process = theraipy.elaborate(extension)
+        return process
+
+    except:
+        msg = "Sorry, I must have misunderstood you. Can you repeat that?"
+        return question(msg)
+
 @ask.intent("TherapyIntent")
 def theraipy(line):
-    sentiment = theraipy.process(line)
+    try:
+        sentiment = theraipy.process(line)
 
-    if sentiment == "pos":
-        msg = "I am glad that you are feeling well. Would you like to continue to speak?"
+        if sentiment == "pos":
+            msg = "I am glad that you are feeling well. Would you like to continue to speak?"
+            return question(msg)
+        if sentiment == "neg":
+            if "kill myself" in line:
+                msg = "I am sorry that you are feeling suicidal."
+                return statement(msg)
+
+    except:
+        msg = "Sorry, I must have misunderstood you. Can you try again?"
         return question(msg)
-    if sentiment == "neg":
-        if "kill myself" in line:
-            msg = "I am sorry that you are feeling suicidal."
-            return statement(msg)
+
 if __name__ == '__main__':
     app.run(debug=True)
 
