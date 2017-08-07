@@ -77,7 +77,7 @@ def theraipy(line):
                 return question(msg)
 
 
-    except Exception, e: return question(str(e))
+    except Exception, e: return str(e)
 
 if __name__ == '__main__':
     app.run(debug=True)
