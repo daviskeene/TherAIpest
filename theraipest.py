@@ -4,13 +4,15 @@ import pandas as pd
 import numpy as np
 import nltk
 from nltk.tokenize import word_tokenize
+import os
+import sys
 
 app = Flask(__name__)
 ask = Ask(app, "/")
 
 #Import the data from a csv file
 
-csvdata = pd.read_csv('training_data.csv', skipinitialspace=True,delimiter=",")
+csvdata = pd.read_csv(r'training_data.csv', skipinitialspace=True,delimiter=",")
 
 #Convert data into a numpy array
 csvdata1 = np.array(csvdata)
@@ -18,6 +20,42 @@ train = []
 
 #Put contents of numpy array into empty list
 train.extend(csvdata1)
+
+
+######################################################################
+# Search Path
+######################################################################
+
+path = []
+"""A list of directories where the NLTK data package might reside.
+   These directories will be checked in order when looking for a
+   resource in the data package.  Note that this allows users to
+   substitute in their own versions of resources, if they have them
+   (e.g., in their home directory under ~/nltk_data)."""
+
+# User-specified locations:
+path += [d for d in os.environ.get('NLTK_DATA', str('')).split(os.pathsep) if d]
+if os.path.expanduser('~/') != '~/':
+    path.append(os.path.expanduser(str('~/nltk_data')))
+
+if sys.platform.startswith('win'):
+    # Common locations on Windows:
+    path += [
+        str(r'C:\nltk_data'), str(r'D:\nltk_data'), str(r'E:\nltk_data'),
+        os.path.join(sys.prefix, str('nltk_data')),
+        os.path.join(sys.prefix, str('lib'), str('nltk_data')),
+        os.path.join(os.environ.get(str('APPDATA'), str('C:\\')), str('nltk_data'))
+    ]
+else:
+    # Common locations on UNIX & OS X:
+    path += [
+        str('/usr/share/nltk_data'),
+        str('/usr/local/share/nltk_data'),
+        str('/usr/lib/nltk_data'),
+        str('/usr/local/lib/nltk_data')
+    ]
+
+nltk.data.path.append('nltk_data')
 
 nltk.download('punkt')
 
