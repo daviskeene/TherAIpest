@@ -5,8 +5,9 @@ import nltk
 from nltk.tokenize import word_tokenize
 from nltk import tokenize
 import re
-import cv2
 import enchant
+import os
+
 
 #Create two seperate lists, one that if filled with positive responses,
 #and one that is filled with negative responses. Based on the sentiment, the chatbot
@@ -21,16 +22,13 @@ train = []
 #Put contents of numpy array into empty list
 train.extend(csvdata1)
 
-nltk.download('punkt')
-
-
 #Two lists of different responses to user input. Randomizing the response creates a conversational feel.
 positive = ["How wonderful! I'm glad that","Oh, cool. Tell me more about why","Neat. Why"]
 negative = ["Oh, I'm really sorry you feel that way. Can you tell me more about why","Aw, I'm sorry that","Why do you think"]
 
 #Function to turn a string from first person into second person
 def f2s(line):
-    rep = {"'":"","I": "you", "am ": "are", "my": "your", "we ": "they", " us": "you","Because": "did","because": "did"," me ": "you"}
+    rep = {"'":"","I": "you", "am ": "are ", "my": "your", "we ": "they", " us": "you","Because": "","because": "did"," me ": " you "}
     rep = dict((re.escape(k), v) for k, v in rep.iteritems())
     pattern = re.compile("|".join(rep.keys()))
     b = pattern.sub(lambda m: rep[re.escape(m.group(0))], line)
@@ -39,9 +37,10 @@ def f2s(line):
     if "," in b:
         re.sub(r'.*you','you',b)
     pwl = enchant.request_pwl_dict("mywords.txt")
-    d2 = enchant.DictWithPWL("en_US",b)
-    d2.check(b)
-    return b.lower()
+    d2 = enchant.DictWithPWL("en_US","mywords.txt")
+    print d2.check(b)
+    return b
+
 
 #The sentiment function for the chat bot.
 def chat(line):
@@ -62,19 +61,22 @@ def chat(line):
             if sentiment == "pos":
                 b = f2s(line)
                 a = random.choice(positive)
-                print a +" "+ b
+                c = random.choice(tokenize.sent_tokenize(b))
+                response = a +" "+ c
+                print response
             elif sentiment == "neg":
+                if "gay" in line:
+                    print "Look, it's 2017. You're allowed to be a homosexual if you wish. What else is bothering you?"
                 if "kill myself" in line:
                     print "I'm sorry that you are feeling suicidal. Can you tell me more about why you feel this way?"
                 b = f2s(line)
                 a = random.choice(negative)
                 c = random.choice(tokenize.sent_tokenize(b))
                 print a +" "+ c
+    file = open(r'/home/davis/PycharmProjects/TherAIpest/log.txt', 'w')
+    file.write('\n'+line+'\n')
+    file.close()
+
 
 while True:
-    key = cv2.waitKey(1) & 0xFF
     chat(input())
-    # if the `q` key is pressed, break from the lop
-    if key == ord("="):
-        break
-
