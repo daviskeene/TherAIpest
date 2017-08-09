@@ -9,11 +9,13 @@ import enchant
 import os
 
 
+os.chdir('/home/davis/PycharmProjects/TherAIpest')
+
 #Create two seperate lists, one that if filled with positive responses,
 #and one that is filled with negative responses. Based on the sentiment, the chatbot
 #python file will select and return a random selection from these two lists.
 
-csvdata = pd.read_csv('/home/davis/PycharmProjects/TherAIpest/training_data.csv', skipinitialspace=True,delimiter=",")
+csvdata = pd.read_csv(r'training_data.csv', skipinitialspace=True,delimiter=",")
 
 #Convert data into a numpy array
 csvdata1 = np.array(csvdata)
@@ -26,20 +28,46 @@ train.extend(csvdata1)
 positive = ["How wonderful! I'm glad that","Oh, cool. Tell me more about why","Neat. Why"]
 negative = ["Oh, I'm really sorry you feel that way. Can you tell me more about why","Aw, I'm sorry that","Why do you think"]
 
+#Need to add more lists, including those for questions, adivce, etc.
+
+#Memory, for recalling past conversation topics.
+
+mem = []
+with open(r'log.txt') as memory:
+    mem.extend(memory)
+    #Won't store more than five responses at a time.
+    if mem.__len__() == 5:
+        file = open(r'log.txt', 'w')
+        file.write("" + '\n')
+        file.close()
+
 #Function to turn a string from first person into second person
 def f2s(line):
-    rep = {"'":"","I": "you", "am ": "are ", "my": "your", "we ": "they", " us": "you","Because": "","because": "did"," me ": " you "}
+    rep = {"'":"","I ": "you ", "am ": "are ", "my": "your",
+           "we ": "they", " us": "you ","Because": "",
+           "because": ""," me ": " you ","im":"you're","I'm":"you're",
+           "and":"","but":"","for":"","if":"","or":"","when":""}
+
+    #Replace substrings in line with those in rep
     rep = dict((re.escape(k), v) for k, v in rep.iteritems())
     pattern = re.compile("|".join(rep.keys()))
+
     b = pattern.sub(lambda m: rep[re.escape(m.group(0))], line)
-    b = b.replace("youm","you're")
     b = random.choice(tokenize.sent_tokenize(b))
-    if "," in b:
-        re.sub(r'.*you','you',b)
+
+    #Split the sentence if it has a comma or because
+    split = b.split("because")
+    split = b.split(",")
+
     pwl = enchant.request_pwl_dict("mywords.txt")
     d2 = enchant.DictWithPWL("en_US","mywords.txt")
+
+    len_choice = max(split,key=len)
+    len_choice = len_choice.replace(" ","",1)
+
     print d2.check(b)
-    return b
+    print len_choice
+    return len_choice.lower()
 
 
 #The sentiment function for the chat bot.
@@ -62,7 +90,7 @@ def chat(line):
                 b = f2s(line)
                 a = random.choice(positive)
                 c = random.choice(tokenize.sent_tokenize(b))
-                response = a +" "+ c
+                response = a +" "+ c + "?"
                 print response
             elif sentiment == "neg":
                 if "gay" in line:
@@ -73,8 +101,8 @@ def chat(line):
                 a = random.choice(negative)
                 c = random.choice(tokenize.sent_tokenize(b))
                 print a +" "+ c
-    file = open(r'/home/davis/PycharmProjects/TherAIpest/log.txt', 'w')
-    file.write('\n'+line+'\n')
+    file = open(r'log.txt', 'a')
+    file.write(line+'\n')
     file.close()
 
 
