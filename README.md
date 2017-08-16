@@ -3,3 +3,4 @@ Alexa skill that uses NLP and flask-ask to simulate a virtual therapist. Based o
 
 Using Python's Nautral Language Toolkit (NLTK), a user's responses undergo sentiment analysis. From there, if the statement is positive then it is met with a positive response, and if it's negative, vice versa. 
 
+# Will commit less frequently over few weeks, touring scandanavia. 
