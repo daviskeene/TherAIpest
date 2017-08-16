@@ -9,7 +9,7 @@ import random
 import os
 
 #Temporary
-os.chdir('/media/davis/1TB_HardDri/github/TherAIpest')
+os.chdir('/home/davis/PycharmProjects/TherAIpest')
 
 #Create two seperate lists, one that if filled with positive responses,
 #and one that is filled with negative responses. Based on the sentiment, the chatbot
@@ -31,6 +31,8 @@ negative = ["Oh, I'm really sorry you feel that way. Can you tell me more about 
 #Need to add more lists, including those for questions, adivce, etc.
 questions = ["Yes, you can always","Yes, go ahead. Tell me about"]
 memory_resp = ["Earlier you mentioned,","You had previously said that"]
+
+
 
 #Memory, for recalling past conversation topics.
 
