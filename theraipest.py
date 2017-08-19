@@ -5,9 +5,11 @@ import numpy as np
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk import tokenize
-from chatbot import f2s,chat
+import f2s
 import random
+import os
 
+os.chdir('/home/davis/PycharmProjects/TherAIpest')
 
 app = Flask(__name__)
 ask = Ask(app, "/")
@@ -76,14 +78,14 @@ def theraipy(line):
             msg = "I'm sorry, can you repeat that?"
             return question(msg)
         if sentiment == "pos":
-            b = f2s(line)
+            b = f2s.f2s(line)
             a = random.choice(positive)
             c = random.choice(tokenize.sent_tokenize(b))
             print a + " " + c
         elif sentiment == "neg":
             if "kill myself" in line:
                 print "I'm sorry that you are feeling suicidal. Can you tell me more about why you feel this way?"
-            b = f2s(line)
+            b = f2s.f2s(line)
             a = random.choice(negative)
             c = random.choice(tokenize.sent_tokenize(b))
             print a + " " + c
